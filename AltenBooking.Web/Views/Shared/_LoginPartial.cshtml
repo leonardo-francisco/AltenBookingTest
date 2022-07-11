@@ -1,0 +1,47 @@
+﻿@using AltenBooking.Domain.Entities
+@using Microsoft.AspNetCore.Identity
+@using System.Security.Claims
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+<ul class="navbar-nav">
+    @if (SignInManager.IsSignedIn(User))
+    {
+        <li class="nav-item">
+            <a class="nav-link text-light" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">
+                <i class="fa-solid fa-hand-peace"></i> Hello @User.Identity.Name!
+            </a>
+        </li>
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle text-light" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="fa-solid fa-gear"></i>
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <a class="dropdown-item" href="@Url.Action("Detail","Profile")">Profile</a>
+                <a class="dropdown-item" href="@Url.Action("Index","Booking")">My reservation</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="#">Something else here</a>
+            </div>
+        </li>
+        <li class="nav-item">
+            <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                <button type="submit" class="nav-link btn btn-link text-light">
+                    <i class="fa-solid fa-person-running"></i> Logout
+                </button>
+            </form>
+        </li>
+    }
+    else
+    {
+        <li class="nav-item">
+            <a class="nav-link text-light" id="register" asp-area="Identity" asp-page="/Account/Register">
+                <i class="fa-solid fa-user-plus"></i> Register
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-light" id="login" asp-area="Identity" asp-page="/Account/Login">
+                <i class="fa-solid fa-right-to-bracket"></i> Login
+            </a>
+        </li>
+    }
+</ul>

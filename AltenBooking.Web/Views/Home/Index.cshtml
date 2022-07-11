@@ -1,0 +1,140 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+
+}
+
+@section Scripts{
+
+<script>
+    $('#dateIn').datepicker();
+    $('#dateOut').datepicker();
+</script>
+<script>
+            $(function(){
+        var dtToday = new Date();
+
+        var month = dtToday.getMonth() + 1;
+        var day = dtToday.getDate();
+        var year = dtToday.getFullYear();
+        if(month < 10)
+            month = '0' + month.toString();
+        if(day < 10)
+            day = '0' + day.toString();
+
+        var minDate = year + '-' + month + '-' + day;
+        var maxDate = year + '-' + "0"+(parseFloat(0+month) + 1) + '-' + day
+
+        //$('#dateIn').attr('min', minDate);
+        //$('#dateIn').attr('max', maxDate);
+        //$('#dateOut').attr('min', minDate);
+        //$('#dateOut').attr('max', maxDate);
+        $('#dateIn').datepicker("option", "minDate",dtToday);
+        $('#dateIn').datepicker("option", "maxDate",new Date(dtToday.getFullYear(), dtToday.getMonth()+1, dtToday.getDay()));
+        $('#dateOut').datepicker("option", "minDate",dtToday);
+        $('#dateOut').datepicker("option", "maxDate",new Date(dtToday.getFullYear(), dtToday.getMonth()+1, dtToday.getDay()));
+    });
+</script>
+}
+
+
+
+<div id="booking" class="section" style="background-image:url('../img/cancun.jpg')">
+    <div class="section-center">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-7 col-md-push-5">
+                    <div class="booking-cta">
+                        <h1>Make your reservation</h1>
+                        <p>
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Animi facere, soluta magnam consectetur molestias itaque
+                            ad sint fugit architecto incidunt iste culpa perspiciatis possimus voluptates aliquid consequuntur cumque quasi.
+                            Perspiciatis.
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-4 col-md-pull-7">
+                    <div class="booking-form">
+                        <form asp-action="GetAvabiality" method="post">
+                            <div class="form-group">
+                                <span class="form-label">Your Destination</span>
+                                <input class="form-control" type="text" id="lblHotel" disabled="disabled" value="Alten Hotel SuperDeluxe">
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <span class="form-label">Check In</span>
+                                        <input class="form-control" id="dateIn" type="text" name="dateIn" required>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <span class="form-label">Check out</span>
+                                        <input class="form-control" id="dateOut" type="text" name="dateOut" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <span class="form-label">Rooms</span>
+                                        <select class="form-control">
+                                            <option>1</option>
+                                            <option>2</option>
+                                            <option>3</option>
+                                        </select>
+                                        <span class="select-arrow"></span>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <span class="form-label">Adults</span>
+                                        <select class="form-control">
+                                            <option>1</option>
+                                            <option>2</option>
+                                            <option>3</option>
+                                        </select>
+                                        <span class="select-arrow"></span>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <span class="form-label">Children</span>
+                                        <select class="form-control">
+                                            <option>0</option>
+                                            <option>1</option>
+                                            <option>2</option>
+                                        </select>
+                                        <span class="select-arrow"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            @if (Context.User.Identity.IsAuthenticated)
+                            {
+                                <div class="form-btn">
+                                    <a type="button" class="submit-btn" href="@Url.Action("CreateBooking","Booking")">
+                                        Booking Now
+                                    </a>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="form-btn">
+                                    <button class="submit-btn">Check availability</button>
+                                </div>
+                            }
+
+                            @if (TempData["NotAvailable"] != null)
+                            {
+                                <span style="color:red;font-weight: 700;margin-top:10px;">@TempData["NotAvailable"]</span>
+                            }
+                            @if (TempData["Available"] != null)
+                            {
+                                <span style="color:red;font-weight: 700;margin-top:10px;">@TempData["Available"]</span>
+                            }
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
